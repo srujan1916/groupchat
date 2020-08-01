@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+
+        </style>
+        <script>
+            var obj = 
+		{
+		    go: function(){
+		    msg = "user1 : " + document.getElementById("msg1").value;
+		    xhr = new XMLHttpRequest();
+		    xhr.open("GET","txtup.php?msg="+msg,true);
+		    
+		    xhr.send();
+                    evs = new EventSource("chat.php");
+                    evs.addEventListener("updateChat",obj.showData,true);
+		},
+		
+                    
+                showData: function(e){
+                    console.log(e.data);
+		    
+                    var div = document.getElementById("c1");div.innerHTML = "";
+                    arr = e.data.split(";");
+		    for(var i = 0; i<arr.length;++i)
+			div.innerHTML += arr[i] + "<br>";
+		    var div = document.getElementById("c2");
+			div.innerHTML = "";
+			for(var i = 0; i<arr.length;++i)
+			div.innerHTML += arr[i] + "<br>";
+                },
+                
+            }
+        </script>
+    </head>
+    <body>
+	<h2>User1</h2>
+	<div id = "c1"></div>
+	<input type = "text" id = "msg1"/>
+        <button onclick="obj.go()">send</button>
+	<br><br> 
+ </body>
+</html>
